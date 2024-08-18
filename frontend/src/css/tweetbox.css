@@ -1,0 +1,29 @@
+.tweet-input {
+  display: flex;
+}
+.tweet-input input {
+  background-color: inherit;
+  border: none;
+  margin-left: 18px;
+  font-size: 18px;
+  color: black;
+}
+.tweet-input input:focus {
+  background-color: inherit;
+  border: none;
+  margin-left: 18px;
+  font-size: 18px;
+  color: black;
+}
+.image-icon-tweet-btn {
+  display: flex;
+  margin-top: 15px;
+  justify-content: space-between;
+}
+.image-icon-tweet-btn input {
+  display: none;
+}
+.image-icon-tweet-btn .MuiSvgIcon-root {
+  font-size: 35px;
+  color: #1976d2;
+}

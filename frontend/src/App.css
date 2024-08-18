@@ -1,0 +1,10 @@
+.root {
+  overflow-y: hidden;
+}
+.root::-webkit-scrollbar {
+  display: none;
+}
+* {
+  margin: 0%;
+  margin-right: 5px;
+}
