@@ -1,0 +1,29 @@
+.sidebar-option {
+  padding-left: 13px;
+  padding-right: 13px;
+  margin: 0%;
+  border-radius: 255px;
+  display: flex;
+  align-items: center;
+}
+/* .sidebar-option-active {
+  padding: 8px;
+  border-radius: 25px;
+  color: #1da1f2;
+  display: flex;
+  align-items: center;
+} */
+.sidebar-option:hover {
+  padding-left: 13px;
+  padding-right: 13px;
+  margin: 0%;
+  border-radius: 255px;
+  display: flex;
+  align-items: center;
+  background-color: #bfcaeec1;
+}
+
+.sidebar-option .MuiSvgIcon-root {
+  margin-right: 8px;
+  font-size: 32px;
+}

@@ -1,0 +1,33 @@
+.login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.login-form input {
+  margin: 1.2em;
+  border: none;
+  padding: 12px;
+  border-radius: 22px;
+  width: 299px;
+}
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12%;
+  overflow: hidden;
+}
+.login-wrapper::-webkit-scrollbar {
+  visibility: hidden;
+}
+
+.ximage {
+  width: 50vw;
+  height: 100vh;
+}
+.login-button {
+  width: 125px;
+  height: 25px;
+  padding: 12px;
+  border-radius: 12px;
+}

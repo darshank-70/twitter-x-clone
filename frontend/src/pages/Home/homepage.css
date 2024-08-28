@@ -1,0 +1,40 @@
+.home-container {
+  height: 100vh;
+  display: flex;
+  /*Main Axis row*/
+  overflow: visible;
+  justify-content: space-around;
+}
+.home-container::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-container::-webkit-scrollbar {
+  display: none;
+}
+.feed-wrap::-webkit-scrollbar {
+  display: none;
+}
+.widgets-wrap::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-container {
+  padding: 0%;
+  overflow-y: scroll;
+  flex: 0.25;
+  max-height: fit-content;
+  margin-right: 0%;
+}
+.feed-wrap {
+  padding: 25px;
+  margin-left: 0%;
+  overflow-y: scroll;
+  flex: 0.5;
+}
+.widgets-wrap {
+  flex: 0.25;
+  overflow-y: scroll;
+}
+/*   */
+.tweet-box {
+  width: 100%;
+}

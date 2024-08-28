@@ -1,0 +1,19 @@
+.register-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.register-form input {
+  margin: 1.2em;
+  border: none;
+  padding: 12px;
+  border-radius: 22px;
+  width: 299px;
+}
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
