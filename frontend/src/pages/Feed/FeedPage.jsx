@@ -3,9 +3,13 @@ import TweetBox from "../../components/TweetBox";
 import { useScrollTrigger } from "@mui/material";
 import axios from "axios";
 import PostCard from "../../components/PostCard";
+import ShimmerPostCard from "../../components/ShimmerPostCard";
+import { usePosts } from "../../../context/PostsProvider";
 
 const Feed = () => {
   const [postsArray, setPostsArray] = useState(null);
+  const postsArr = usePosts();
+  console.log(postsArr);
   const fetchPosts = async () => {
     try {
       const response = await fetch(
@@ -20,6 +24,7 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
+    // setPostsArray(postsArr);
   }, []); // Empty dependency array ensures fetching on initial render
 
   const handleNewTweet = async () => {
@@ -29,10 +34,13 @@ const Feed = () => {
   return (
     <div className="feed-page">
       <TweetBox onNewTweet={handleNewTweet} />
-
+      {/* <ShimmerPostCard /> */}
       <div className="posts-tweeted">
+        {!postsArray && [1, 2, 3, 4, 5].map(() => <ShimmerPostCard />)}
         {postsArray &&
-          postsArray.map((post) => <PostCard key={post._id} post={post} />)}
+          postsArray.map((post) => (
+            <PostCard key={Math.random()} post={post} />
+          ))}
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ async function run() {
         const newPost = change.fullDocument;
         const newPostKeywords = ["cricket", "science"];
         const containsKeywords = newPostKeywords.some((keyword) =>
-          newPost.tweetText.includes(keyword)
+          newPost.tweetText.includes(keyword.toLowerCase())
         );
         console.log("new post detected: changeStream");
         if (containsKeywords) {

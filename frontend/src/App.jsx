@@ -18,6 +18,7 @@ import More from "./pages/More/MorePage";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthProvider from "./AuthProvider";
 import { io } from "socket.io-client";
+import PostsProvider, { usePosts } from "../context/PostsProvider";
 function App() {
   const [newPostRecieved, setNewPostRecieved] = useState(null);
 
@@ -30,7 +31,7 @@ function App() {
     console.log(socket.current);
     //  upon connection and reconnection.
     socket.current.on("connect", () => {
-      console.log("SOCKET CONNEXTION SUCCESS");
+      console.log("SOCKET CONNECTION SUCCESS");
       console.log(socket.id); // x8WIv7-mJelg7on_ALbx
     });
     console.log(socket);
@@ -53,6 +54,7 @@ function App() {
       const notificationOptions = {
         body: post.tweetText,
       };
+      console.log("Emitted notify event from backend");
       if (post.tweetImageUrl) {
         notificationOptions.icon = post.tweetImageUrl;
       }
@@ -67,6 +69,8 @@ function App() {
       }
     };
   }, []);
+  const postsHook = usePosts();
+  console.log(postsHook);
   return (
     <div className="app">
       <AuthProvider>
@@ -80,7 +84,15 @@ function App() {
               path="home"
               element={<ProtectedRoute element={<HomePage />} />}
             >
-              <Route index path="feed" element={<Feed />} />
+              <Route
+                index
+                path="feed"
+                element={
+                  <PostsProvider>
+                    <Feed />
+                  </PostsProvider>
+                }
+              />
               <Route path="explore" element={<Explore />} />
               <Route path="notifications" element={<Notifications />} />
               <Route path="messages" element={<Messages />} />

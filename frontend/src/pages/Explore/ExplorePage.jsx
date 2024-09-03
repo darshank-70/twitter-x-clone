@@ -3,6 +3,8 @@ import PostCard from "../../components/PostCard";
 import { Button } from "@mui/material";
 import axios from "axios";
 import "./explore.css";
+import ShimmerPostCard from "../../components/ShimmerPostCard";
+
 const Explore = () => {
   const [searchQuery, setSearchQuery] = useState(null);
   const searchInputRef = useRef();
@@ -14,14 +16,18 @@ const Explore = () => {
     e.preventDefault();
     setIsLoading(true);
     setSearchQuery(searchInputRef.current.value);
+
     try {
-      const response = await axios.post("http://localhost:5000/search", {
-        query: searchQuery,
-      });
+      const response = await axios.post(
+        "https://twitter-x-clone-1.onrender.com/search",
+        {
+          query: searchQuery,
+        }
+      );
       const { keyPosts } = response.data;
       console.log(response);
       console.log(searchQuery);
-      setSearchedPosts(keyPosts);
+      setSearchedPosts(keyPosts.reverse());
       if (keyPosts.length == 0)
         setError(`could not find posts related to ${searchQuery} `);
     } catch (error) {
@@ -46,7 +52,7 @@ const Explore = () => {
           />
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || !searchQuery}
             onClick={searchButtonClicked}
             variant="contained"
             value={searchQuery}
@@ -57,7 +63,7 @@ const Explore = () => {
       </div>
       <div className="searched-posts-container">
         <div className="posts-tweeted">
-          {isLoading && <h2>Loading...</h2>}
+          {isLoading && [1, 2, 3].map((item) => <ShimmerPostCard key={item} />)}
           {error && <h2>Could not find any posts related to {searchQuery}</h2>}
           {!error && searchedPosts && (
             <h2>results for your Search on {searchQuery}</h2>
