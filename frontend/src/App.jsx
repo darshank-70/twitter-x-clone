@@ -25,7 +25,7 @@ function App() {
 
   useEffect(() => {
     if (!socket.current?.id) {
-      socket.current = io("http://localhost:5555");
+      socket.current = io("https://twitter-x-clone-1.onrender.com");
     }
     console.log(socket.current);
     //  upon connection and reconnection.

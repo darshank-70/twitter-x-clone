@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const port = 5555;
+const port = 5000;
 
 // Create an HTTP server using the Express app
 const server = http.createServer(app);
