@@ -6,4 +6,13 @@ export default defineConfig({
   build: {
     commonjsOptions: { transformMixedEsModules: true },
   },
+  server: {
+    proxy: {
+      "/socket.io": {
+        target: "http://localhost:5555",
+        changeOrigin: true,
+        ws: true, // Enable WebSocket proxy
+      },
+    },
+  },
 });

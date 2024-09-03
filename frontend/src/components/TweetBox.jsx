@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { Avatar, Card, Button } from "@mui/material";
-import { AddPhotoAlternateOutlined } from "@mui/icons-material";
+import { Avatar, Card, Button, CircularProgress } from "@mui/material";
+import { AddPhotoAlternateOutlined, CheckCircle } from "@mui/icons-material";
 import axios from "axios";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import { auth } from "../firebase";
-
+import "../css/tweetbox.css";
 const TweetBox = ({ onNewTweet }) => {
   const [loggedInUser] = useLoggedInUser();
   const [tweetText, setTweetText] = useState("");
@@ -126,22 +126,25 @@ const TweetBox = ({ onNewTweet }) => {
             />
           </div>
           <div className="image-icon-tweet-btn">
-            <label htmlFor="image-input" className="image_icon">
-              {isLoadingFile ? (
-                <p>Uploading</p>
-              ) : tweetImageUrl ? (
-                <p>Image Uploaded</p>
-              ) : (
-                <AddPhotoAlternateOutlined />
-              )}
-            </label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              onChange={handleImageUpload}
-              id="image-input"
-              className="imageInput"
-            />
+            <div className="input-tweet-image">
+              <label htmlFor="image-input" className="image_icon">
+                {isLoadingFile ? (
+                  <CircularProgress color="info" />
+                ) : tweetImageUrl ? (
+                  <CheckCircle color="success" />
+                ) : (
+                  <AddPhotoAlternateOutlined color="primary" fontSize="large" />
+                )}
+              </label>
+              <input
+                hidden
+                ref={fileInputRef}
+                type="file"
+                onChange={handleImageUpload}
+                id="image-input"
+                className="imageInput"
+              />
+            </div>
             <Button variant="contained" type="submit" disabled={isLoadingFile}>
               Tweet
             </Button>

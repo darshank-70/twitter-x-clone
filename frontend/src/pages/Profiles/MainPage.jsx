@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useLoggedInUser from "../../hooks/useLoggedInUser";
-import { Avatar, Button, Modal, Switch, ToggleButton } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  Modal,
+  Switch,
+  ToggleButton,
+} from "@mui/material";
 import "./mainpage.css";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { PostAdd } from "@mui/icons-material";
@@ -88,56 +95,90 @@ const MainPage = ({ currentUser }) => {
       })
       .finally(() => setAvatarLoading(false));
   };
-  const handleCoverInput = async (e) => {
-    setIsLoading(true);
+  // const handleCoverInput = async (e) => {
+  //   setIsLoading(true);
 
+  //   const imageUploaded = e.target.files[0];
+  //   const formData = new FormData();
+  //   formData.set("image", imageUploaded);
+  //   console.log(formData);
+  //   try {
+  //     axios
+  //       .post(
+  //         "https://api.imgbb.com/1/upload?key=c452bc13182fbd9677158a44470747dd",
+  //         formData
+  //       )
+  //       .then((response) => {
+  //         setCoverImageUrl(response.data.data.display_url);
+  //         console.log("cover Updatedddd", response);
+  //         const url = response.data.data.display_url;
+  //         console.log(currentUser);
+  //         setCoverImageUrl(url);
+  //         const userCoverImage = {
+  //           email: currentUser?.email,
+  //           coverImageUrl: url,
+  //         };
+  //         console.log(currentUser?.email);
+  //         axios
+  //           .patch(
+  //             `https://twitter-x-clone-vksq.onrender.com/user-updates?email=${currentUser?.email}`,
+  //             userCoverImage
+  //           )
+  //           .then((r) => {
+  //             setCoverImageUrl(
+  //               loggedInUser[0]?.coverImageUrl
+  //                 ? loggedInUser[0]?.coverImageUrl
+  //                 : defaultImageUrl
+  //             );
+  //           });
+  //         // setIsLoading(false);
+  //       })
+  //       .catch((err) => console.log("errin posting image", err));
+
+  //     // console.log(response);
+  //     //insert it into DB by patch along with URL
+  //   } catch (error) {
+  //     console.log(error);
+  //     // setIsLoading(false);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  //   await fetchUpdatedUser();
+  // };
+  const handleCoverInput = (e) => {
+    setIsLoading(true);
     const imageUploaded = e.target.files[0];
     const formData = new FormData();
     formData.set("image", imageUploaded);
-    console.log(formData);
-    try {
-      axios
-        .post(
-          "https://api.imgbb.com/1/upload?key=c452bc13182fbd9677158a44470747dd",
-          formData
-        )
-        .then((response) => {
-          setCoverImageUrl(response.data.data.display_url);
-          console.log("cover Updatedddd", response);
-          const url = response.data.data.display_url;
-          console.log(currentUser);
-          setCoverImageUrl(url);
-          const userCoverImage = {
-            email: currentUser?.email,
-            coverImageUrl: url,
-          };
-          console.log(currentUser?.email);
-          axios
-            .patch(
-              `https://twitter-x-clone-vksq.onrender.com/user-updates?email=${currentUser?.email}`,
-              userCoverImage
-            )
-            .then((r) => {
-              setCoverImageUrl(
-                loggedInUser[0]?.coverImageUrl
-                  ? loggedInUser[0]?.coverImageUrl
-                  : defaultImageUrl
-              );
-            });
-          // setIsLoading(false);
-        })
-        .catch((err) => console.log("errin posting image", err));
-
-      // console.log(response);
-      //insert it into DB by patch along with URL
-    } catch (error) {
-      console.log(error);
-      // setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-    await fetchUpdatedUser();
+    axios
+      .post(
+        "https://api.imgbb.com/1/upload?key=c452bc13182fbd9677158a44470747dd",
+        formData
+      )
+      .then((response) => {
+        console.log(response);
+        const url = response.data.data.display_url;
+        console.log(currentUser);
+        // setAvatarLoading(false);
+        setCoverImageUrl(url);
+        const userCoverImage = {
+          email: currentUser?.email,
+          coverImageUrl: url,
+        };
+        console.log(currentUser?.email);
+        axios.patch(
+          `https://twitter-x-clone-vksq.onrender.com/user-updates?email=${currentUser?.email}`,
+          userCoverImage
+        );
+        // setAvatarLoading(false);
+      })
+      .catch((err) => {
+        // setAvatarLoading(false);
+        console.log("Failed COver Upload", err);
+      })
+      .finally(() => setIsLoading(false));
   };
+
   const [isProfileEdited, setProfileEdited] = useState(false);
   // const handleEditRender = () => {
   //   setProfileEdited(true);
@@ -195,11 +236,12 @@ const MainPage = ({ currentUser }) => {
 
       <div className="cover-inputs">
         <label htmlFor="cover-input">
-          {isLoading ? <SyncIcon /> : <AddAPhotoIcon />}
+          {isLoading ? <CircularProgress /> : <AddAPhotoIcon />}
         </label>
         <input
           disabled={isLoading}
           type="file"
+          accept=".jpg"
           id="cover-input"
           onChange={handleCoverInput}
         />
@@ -213,9 +255,14 @@ const MainPage = ({ currentUser }) => {
       <div className="avatar-inputs">
         <label htmlFor="avatar-input" className="svg-icon">
           {" "}
-          {isAvatarLoading ? <SyncIcon /> : <AddAPhotoIcon />}
+          {isAvatarLoading ? <CircularProgress /> : <AddAPhotoIcon />}
         </label>
-        <input type="file" id="avatar-input" onChange={handleAvatarInput} />
+        <input
+          type="file"
+          accept=".jpg"
+          id="avatar-input"
+          onChange={handleAvatarInput}
+        />
       </div>
       <div className="edit-button">
         <Editprofile

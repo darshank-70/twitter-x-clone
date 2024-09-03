@@ -24,9 +24,10 @@ function App() {
   const socket = useRef(null); // Use useRef to hold the socket instance
 
   useEffect(() => {
-    if (!socket.current) {
-      socket.current = io("ws://localhost:4444"); // Initialize socket only once
+    if (!socket.current?.id) {
+      socket.current = io("http://localhost:5555");
     }
+    console.log(socket.current);
     //  upon connection and reconnection.
     socket.current.on("connect", () => {
       console.log("SOCKET CONNEXTION SUCCESS");
@@ -61,7 +62,9 @@ function App() {
 
     // Clean up on component unmount
     return () => {
-      socket.current.disconnect();
+      if (socket.current) {
+        socket.current.disconnect();
+      }
     };
   }, []);
   return (

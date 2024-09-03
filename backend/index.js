@@ -1,34 +1,44 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const dotenv = require("dotenv");
-const { Server } = require("socket.io");
-const http = require("http");
 const { log } = require("console");
-const port = 5555;
-// const app = express();
-const app = require("express")();
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
+const dotenv = require("dotenv");
 
-app.use(express.json());
-app.use(cors());
 dotenv.config();
 
-const server = require("http").createServer(app);
-const io = require("socket.io")(server, { cors: { origin: "*" } });
-io.listen(4444);
-// const server = http.createServer(app);
-// const io = new Server(server, {
-//   cors: { origin: "*" },
-// });
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+const port = 5555;
+
+// Create an HTTP server using the Express app
+const server = http.createServer(app);
+
+// Initialize Socket.IO with the HTTP server
+const io = new Server(server, {
+  cors: { origin: "*" },
+});
+
+// Socket.IO connection
 io.on("connection", (clientSocket) => {
-  console.log("user connected", clientSocket.id);
-  io.emit("success", "Connection success: Socket");
+  console.log("User connected", clientSocket.id);
+
+  // Emit a success message to the connected client
+  clientSocket.emit("success", "Connection success: Socket");
+
+  clientSocket.on("disconnect", () => {
+    console.log("User disconnected", clientSocket.id);
+  });
 });
-app.listen(port, () => {
+
+// Use the server instance to listen on the desired port
+server.listen(port, () => {
   console.log("Listening on port:", port);
-  io.emit("success", "Connection success: Socket");
 });
+// ////////////////////////////////////
 const dbUrl = process.env.MONGO_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version

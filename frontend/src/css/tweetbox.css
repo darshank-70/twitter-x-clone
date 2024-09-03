@@ -6,8 +6,10 @@
   border: none;
   margin-left: 18px;
   font-size: 18px;
+
   color: black;
 }
+
 .tweet-input input:focus {
   background-color: inherit;
   border: none;
@@ -16,13 +18,15 @@
   color: black;
 }
 .image-icon-tweet-btn {
+  padding-top: 19px;
   display: flex;
-  margin-top: 15px;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  align-items: center;
 }
 .image-icon-tweet-btn input {
   display: none;
 }
+
 .image-icon-tweet-btn .MuiSvgIcon-root {
   font-size: 35px;
   color: #1976d2;
