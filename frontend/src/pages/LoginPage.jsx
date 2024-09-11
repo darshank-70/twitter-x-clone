@@ -9,6 +9,7 @@ import xImage from "../assets/ximage.png";
 import { Button } from "@mui/material";
 import { useAuth } from "../AuthProvider";
 import GoogleButton from "react-google-button";
+import axios from "axios";
 const LoginPage = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +32,30 @@ const LoginPage = () => {
     setIsLoading(false);
   };
   const handleGoogleSignIn = async () => {
-    await googleSignIn();
+    const googleUser = await googleSignIn();
+    // console.log(googleUser);
+    // check if the user signing in  first time.
+    // i.e if DB already have user with the googleUser.email
+    try {
+      const user = await axios.get(
+        `https://twitter-x-clone-vksq.onrender.com/loggedInUser?email=${googleUser.email}`
+      );
+      if (!user) {
+        // user if signing in google first time
+        const userData = {
+          username: googleUser.email,
+          name: googleUser.displayName,
+          email: emailId,
+          enabledNotification: false,
+          remainingTweets: 3,
+        };
+        const { data } = axios.post(
+          "https://twitter-x-clone-vksq.onrender.com/register",
+          userData
+        );
+        console.log("User created First TIME", data);
+      }
+    } catch (err) {}
   };
   return currentAuthUser ? (
     <Navigate to={"/home/feed"} />

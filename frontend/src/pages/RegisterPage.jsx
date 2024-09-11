@@ -17,17 +17,20 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    const userData = {
-      username: username,
-      name: "name",
-      email: emailId,
-      enabledNotification: false,
-    };
-    const { data } = axios.post(
-      "https://twitter-x-clone-vksq.onrender.com/register",
-      userData
-    );
-    console.log(data);
+    try {
+      const userData = {
+        username: emailId,
+        name: username,
+        email: emailId,
+        enabledNotification: false,
+        remainingTweets: 3,
+      };
+      const { data } = axios.post(
+        "https://twitter-x-clone-vksq.onrender.com/register",
+        userData
+      );
+      console.log("User created First TIME", data);
+    } catch (err) {}
     try {
       await createUserWithEmailAndPassword(auth, emailId, password);
       toast.success("User Created Succesfully");

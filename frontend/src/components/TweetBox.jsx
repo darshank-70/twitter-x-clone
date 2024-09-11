@@ -1,6 +1,20 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { Avatar, Card, Button, CircularProgress } from "@mui/material";
-import { AddPhotoAlternateOutlined, CheckCircle } from "@mui/icons-material";
+import {
+  Avatar,
+  Card,
+  Button,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import {
+  AddPhotoAlternateOutlined,
+  CheckCircle,
+  CurrencyExchangeSharp,
+  Money,
+  MoneyOffOutlined,
+  MoneySharp,
+} from "@mui/icons-material";
 import axios from "axios";
 import useLoggedInUser from "../hooks/useLoggedInUser";
 import { auth } from "../firebase";
@@ -13,6 +27,8 @@ const TweetBox = ({ onNewTweet }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  ////////////////////////////////task 3
+  const [remainingTweets, setRemainingTweets] = useState(1);
   const fileInputRef = useRef(null);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -29,6 +45,7 @@ const TweetBox = ({ onNewTweet }) => {
         : loggedInUser[0]?.username
     );
     setUserEmail(loggedInUser[0]?.email.split("@")[0]);
+    setRemainingTweets(loggedInUser[0]?.remainingTweets);
   }, [loggedInUser, currentUser]);
   const userProfilePicUrl = useMemo(() => {
     const url = loggedInUser[0]?.avatarImageUrl;
@@ -75,6 +92,15 @@ const TweetBox = ({ onNewTweet }) => {
         );
         const data = await response.json();
         console.log(data);
+        // when tweet is Success decrement the DB's remainingTweet
+        const editedData = {
+          remainingTweets: remainingTweets - 1,
+        };
+        setRemainingTweets((prev) => prev - 1);
+        await axios.patch(
+          `https://twitter-x-clone-vksq.onrender.com/user-updates?email=${currentUser?.email}`,
+          editedData
+        );
       } catch (error) {
         console.error("Error submitting tweet:", error);
       }
@@ -123,6 +149,7 @@ const TweetBox = ({ onNewTweet }) => {
               placeholder="What's Happening?"
               value={tweetText}
               onChange={(e) => setTweetText(e.target.value)}
+              required
             />
           </div>
           <div className="image-icon-tweet-btn">
@@ -145,9 +172,26 @@ const TweetBox = ({ onNewTweet }) => {
                 className="imageInput"
               />
             </div>
-            <Button variant="contained" type="submit" disabled={isLoadingFile}>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={isLoadingFile || !remainingTweets}
+            >
               Tweet
             </Button>
+            <Typography variant="subtitle1">
+              You have{" "}
+              <span style={{ color: remainingTweets ? "primary" : "red" }}>
+                {" "}
+                {remainingTweets}{" "}
+              </span>
+              tweets Left!
+            </Typography>
+            <IconButton>
+              {" "}
+              <CurrencyExchangeSharp />
+              <Typography variant="subtitle1">Recharge Now</Typography>
+            </IconButton>
           </div>
         </form>
       </Card>
