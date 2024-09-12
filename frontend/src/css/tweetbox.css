@@ -1,3 +1,6 @@
+.tweet-box {
+  background-color: azure;
+}
 .tweet-input {
   display: flex;
 }

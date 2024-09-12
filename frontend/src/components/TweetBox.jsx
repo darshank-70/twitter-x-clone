@@ -6,6 +6,7 @@ import {
   CircularProgress,
   IconButton,
   Typography,
+  CardMedia,
 } from "@mui/material";
 import {
   AddPhotoAlternateOutlined,
@@ -167,6 +168,7 @@ const TweetBox = ({ onNewTweet }) => {
                 hidden
                 ref={fileInputRef}
                 type="file"
+                accept=".jpg, .jpeg, .png"
                 onChange={handleImageUpload}
                 id="image-input"
                 className="imageInput"
@@ -194,6 +196,14 @@ const TweetBox = ({ onNewTweet }) => {
             </IconButton>
           </div>
         </form>
+        {tweetImageUrl && (
+          <CardMedia
+            component="img"
+            height="215"
+            image={tweetImageUrl}
+            alt="Image tweeted"
+          />
+        )}
       </Card>
     </div>
   );

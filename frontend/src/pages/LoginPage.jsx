@@ -33,29 +33,32 @@ const LoginPage = () => {
   };
   const handleGoogleSignIn = async () => {
     const googleUser = await googleSignIn();
-    // console.log(googleUser);
+    console.log(googleUser);
     // check if the user signing in  first time.
     // i.e if DB already have user with the googleUser.email
     try {
       const user = await axios.get(
         `https://twitter-x-clone-vksq.onrender.com/loggedInUser?email=${googleUser.email}`
       );
-      if (!user) {
+      console.log(user);
+      if (user.data.length == 0) {
         // user if signing in google first time
         const userData = {
-          username: googleUser.email,
+          username: googleUser.displayName,
           name: googleUser.displayName,
-          email: emailId,
+          email: googleUser.email,
           enabledNotification: false,
           remainingTweets: 3,
         };
-        const { data } = axios.post(
+        const { data } = await axios.post(
           "https://twitter-x-clone-vksq.onrender.com/register",
           userData
         );
         console.log("User created First TIME", data);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
   return currentAuthUser ? (
     <Navigate to={"/home/feed"} />
